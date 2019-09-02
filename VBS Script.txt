@@ -1,0 +1,66 @@
+Sub Easy()
+Dim LastRow As Long
+    'Find the last non-blank cell in column A(1)
+    LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+'Print Header
+ Range("L1").Value = "Ticker"
+ Range("O1").Value = "Total Stock Volumn"
+ Range("M1").Value = "Yearly Change"
+ Range("N1").Value = "Percentage Change"
+Dim StockValue As String
+Dim Volumn As Double
+    Volumn = 0
+Dim SummaryTableRow As Double
+SummaryTableRow = 2
+Dim OpenPrice As Double
+Dim OpenPriceRow As Long
+OpenPriceRow = 2
+Dim ClosePrice As Double
+
+
+'Loop through 2 to last row for stock name
+For i = 2 To LastRow
+If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+'Set Stock Name and Volumn
+
+StockValue = Cells(i, 1).Value
+Volumn = Volumn + Cells(i, 7).Value
+ClosePrice = Cells(i, 6).Value
+OpenPrice = Cells(OpenPriceRow, 3).Value
+
+'Print Summary Table
+ Range("L" & SummaryTableRow).Value = StockValue
+ Range("O" & SummaryTableRow).Value = Volumn
+ Range("M" & SummaryTableRow).Value = ClosePrice - OpenPrice
+    If OpenPrice = 0 Then
+    Range("N" & SummaryTableRow).Value = 0
+    Else
+    Range("N" & SummaryTableRow).Value = (ClosePrice - OpenPrice) / OpenPrice
+    End If
+ 'Reset
+Volumn = 0
+SummaryTableRow = SummaryTableRow + 1
+OpenPriceRow = 1 + i
+
+Else
+Volumn = Volumn + Cells(i, 7).Value
+End If
+Next i
+End Sub
+Sub ConditionalFormatting()
+Dim LastRow2 As Double
+LastRow2 = Cells(Rows.Count, 13).End(xlUp).Row
+For i = 2 To LastRow2
+If Cells(i, 13) > 0 Then
+Cells(i, 13).Interior.ColorIndex = 4
+Else
+
+Cells(i, 13).Interior.ColorIndex = 3
+End If
+Next i
+End Sub
+
+
+
+
